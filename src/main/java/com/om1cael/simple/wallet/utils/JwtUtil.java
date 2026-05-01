@@ -12,7 +12,7 @@ public class JwtUtil {
     @Value("{jwt.token}")
     private String jwtToken;
 
-    String create(String email) {
+    public String create(String email) {
         Algorithm algorithm = Algorithm.HMAC512(jwtToken);
         return JWT.create()
                 .withIssuer("simplewallet")
@@ -20,7 +20,7 @@ public class JwtUtil {
                 .sign(algorithm);
     }
 
-    String getSubject(String token) {
+    public String getSubject(String token) {
         Algorithm algorithm = Algorithm.HMAC512(jwtToken);
         JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer("simplewallet")
