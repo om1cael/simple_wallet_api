@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +19,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
@@ -42,6 +44,14 @@ public class User implements UserDetails {
 
     @NotNull
     private BigDecimal balance;
+
+    public User(String fullName, String document, String email, String password) {
+        this.fullName = fullName;
+        this.document = document;
+        this.email = email;
+        this.password = password;
+        this.balance = BigDecimal.valueOf(0);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
