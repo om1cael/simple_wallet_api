@@ -1,5 +1,6 @@
 package com.om1cael.simple.wallet.services;
 
+import com.om1cael.simple.wallet.dtos.NotificationDTO;
 import com.om1cael.simple.wallet.dtos.TransactionDTO;
 import com.om1cael.simple.wallet.dtos.UserResponseDTO;
 import com.om1cael.simple.wallet.exceptions.MoneyTransferException;
@@ -9,6 +10,7 @@ import com.om1cael.simple.wallet.repositories.TransactionRepository;
 import com.om1cael.simple.wallet.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Service;
 public class TransactionService {
     @Autowired
     private TransactionRepository repository;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Autowired
     private UserRepository userRepository;
@@ -44,6 +49,12 @@ public class TransactionService {
         userRepository.save(currentUser);
         userRepository.save(receiver);
         repository.save(transaction);
+
+        rabbitTemplate.convertAndSend(
+                "transaction.ex",
+                "transaction.success",
+                new NotificationDTO(currentUser.getFullName(), transactionDTO.value())
+        );
 
         return new UserResponseDTO(currentUser.getId(), currentUser.getBalance());
     }
