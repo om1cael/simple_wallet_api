@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit;
 
 @Component
 public class JwtUtil {
-    @Value("${jwt.token}")
+    @Value("{jwt.token}")
     private String jwtToken;
 
     String create() {
