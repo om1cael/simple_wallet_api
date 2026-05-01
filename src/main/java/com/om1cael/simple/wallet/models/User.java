@@ -50,7 +50,7 @@ public class User implements UserDetails {
         this.document = document;
         this.email = email;
         this.password = password;
-        this.balance = BigDecimal.valueOf(0);
+        this.balance = BigDecimal.valueOf(100);
     }
 
     @Override

@@ -6,13 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "transactions")
 public class Transaction {
     @Id
@@ -27,5 +27,11 @@ public class Transaction {
     @JoinColumn(name = "receiverId", referencedColumnName = "id")
     private User receiver;
 
-    private BigInteger value;
+    private BigDecimal value;
+
+    public Transaction(User sender, User receiver, BigDecimal value) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.value = value;
+    }
 }
