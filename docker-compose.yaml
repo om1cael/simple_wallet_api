@@ -1,4 +1,18 @@
 services:
+  simplewallet:
+    build: .
+    depends_on:
+      - postgresql
+      - rabbitmq
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/simplewallet
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_DATASOURCE_PASSWORD: 123
+      SPRING_RABBITMQ_PASSWORD: 123
+      SECRET: arandomjwttokenshouldbeputhere
+    ports:
+      - '8080:8080'
+
   postgresql:
     image: postgres:18.3-alpine3.23
     environment:
